@@ -10,6 +10,7 @@ CAPTURE_DEVICE= 0
 CAPTURE_INTERVAL= 5 #seconds
 RETRY_N = 2   #number of times to retry after changing state to make sure it is permanent
 RETRY_CAPTURE_INTERVAL= 0.5
+LOCK_COMMAND="/usr/bin/xscreensaver-command -lock"
 
 classifier = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
 assert not classifier.empty()
@@ -47,6 +48,8 @@ def face_detected( frame_size ):
 
 def new_face_detection_state( state ):
     logging.info( "new state: {0}".format(state) )
+    if not state:
+        os.system(LOCK_COMMAND)
 
 fs= calculate_mini_frame_size()
 last_hard_state= True          #last state we are sure of (after checking for flapping)
