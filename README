@@ -1,0 +1,8 @@
+This script periodically monitors a webcam and locks your computer if a face is not detected (i.e.: you left your seat).
+
+Note this does not perform face *recognition*, which is a entirely different task.
+
+The "xscreensaver" program is used to do the locking, but that can easily be adapted.
+
+Dependencies:
+ - OpenCV and its python bindings (python-opencv in debian and derivatives)
