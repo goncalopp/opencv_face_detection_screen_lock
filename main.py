@@ -5,7 +5,7 @@ import os
 logging.basicConfig(level=logging.DEBUG, format= '%(asctime)s\t%(message)s')
 import cv2
 
-HORIZONTAL_RES=200 #actual frame can be between HORIZONTAL_RES/2 and HORIZONTAL_RES
+HORIZONTAL_RES=500 #actual frame can be between HORIZONTAL_RES/2 and HORIZONTAL_RES
 CAPTURE_DEVICE= 0
 CAPTURE_INTERVAL= 5 #seconds
 RETRY_N = 2   #number of times to retry after changing state to make sure it is permanent
@@ -44,6 +44,7 @@ def face_detected( frame_size ):
     #cv2.imshow("face", miniframe)
     #cv2.waitKey(0)
     #cv2.destroyAllWindows()
+    print faces
     return detected
 
 def new_face_detection_state( state ):
@@ -61,7 +62,12 @@ logging.info( "started" )
 
 while True:
     cycle_start_time= time.time()
-    detected= face_detected( fs )
+    try:
+        detected= face_detected( fs )
+    except Exception as e:
+        logging.warn("Failed to capture frame: "+str(e))
+        time.sleep(CAPTURE_INTERVAL)
+        continue
     if detected!=last_soft_state:
         logging.debug("soft state changed to {0}".format(detected))
         last_soft_state= detected
